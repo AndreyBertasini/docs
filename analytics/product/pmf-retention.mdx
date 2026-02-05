@@ -1,0 +1,32 @@
+---
+title: "Product Market Fit & Retention"
+description: "Framework avanzati per misurare l'aderenza del prodotto al mercato."
+---
+
+Il **Product Market Fit (PMF)** non è una sensazione, è una metrica calcolabile. In questa lezione analizzeremo la *Retention Curve* e come stabilizzarla.
+
+## Il Retention Framework
+
+Per capire se il prodotto funziona, dobbiamo abbandonare le *Vanity Metrics* e concentrarci sulla coorte.
+
+<CardGroup cols={2}>
+  <Card title="Linear Retention" icon="arrow-trend-down">
+    Se la curva tende a zero, non hai PMF.
+  </Card>
+  <Card title="Flattening Curve" icon="arrow-right">
+    Se la curva si appiattisce (es. al 20%), hai trovato il tuo core audience.
+  </Card>
+</CardGroup>
+
+### Calcolo della Coorte in Python
+
+```python
+# Esempio di calcolo retention rate mensile
+retention = df.groupby(['cohort_month', 'activity_month']) \
+              .agg(n_customers=('user_id', 'nunique')) \
+              .reset_index()
+```
+
+<Note>
+**Pro Tip**: Non guardare mai la retention media aggregata. Segmenta sempre per canale di acquisizione. Una coorte da *Facebook Ads* si comporta diversamente da una *Organic Search*.
+</Note>

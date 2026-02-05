@@ -1,0 +1,53 @@
+---
+title: "Real-Time Funnels con ClickHouse"
+sidebarTitle: "Funnel Queries"
+description: "Sostituire Google Analytics 4 con query SQL proprietarie su ClickHouse."
+---
+
+Nell'era del **Real-Time Marketing**, aspettare 24 ore per un report è inaccettabile. Utilizziamo ClickHouse per calcolare il tasso di conversione in millisecondi su milioni di righe.
+
+## La potenza di `windowFunnel`
+
+ClickHouse possiede funzioni native ottimizzate per i marketer. La funzione `windowFunnel` ci permette di definire una finestra temporale (es. 1 ora) entro la quale l'utente deve completare i passi.
+
+### Scenario Tecnico
+
+Immagina di dover tracciare questo percorso in tempo reale:
+1.  `view_item` (Visualizza prodotto)
+2.  `add_to_cart` (Aggiunge al carrello)
+3.  `purchase` (Acquista)
+
+### La Query SQL
+
+<CodeGroup>
+  ```sql ClickHouse SQL
+  SELECT
+      level,
+      count() as utenti,
+      round(count() / first_value(count()) OVER () * 100, 2) as conversion_rate
+  FROM
+  (
+      SELECT
+          user_id,
+          windowFunnel(3600, 'strict_order')(
+              timestamp,
+              event_name = 'view_item',
+              event_name = 'add_to_cart',
+              event_name = 'purchase'
+          ) as level
+      FROM events_stream
+      WHERE toDate(timestamp) = today()
+      GROUP BY user_id
+  )
+  GROUP BY level
+  ORDER BY level ASC
+  ```
+</CodeGroup>
+
+<Warning>
+**High Cardinality Warning**: Se usi `user_id` basati su cookie in un ambiente ITP (Safari), assicurati di implementare una logica di *Identity Resolution* server-side prima di ingerire i dati in ClickHouse.
+</Warning>
+
+## Perché questo approccio vince nel 2026?
+
+A differenza delle piattaforme SaaS chiuse, qui hai accesso ai **Raw Data**. Puoi incrociare questi dati con il tuo CRM o i costi delle campagne pubblicitarie in tempo reale.
