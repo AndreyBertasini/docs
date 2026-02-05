@@ -19,32 +19,32 @@ Immagina di dover tracciare questo percorso in tempo reale:
 
 ### La Query SQL
 
-<CodeGroup>
-  ```sql ClickHouse SQL
-  SELECT
-      level,
-      count() as utenti,
-      round(count() / first_value(count()) OVER () * 100, 2) as conversion_rate
-  FROM
-  (
-      SELECT
-          user_id,
-          windowFunnel(3600, 'strict_order')(
-              timestamp,
-              event_name = 'view_item',
-              event_name = 'add_to_cart',
-              event_name = 'purchase'
-          ) as level
-      FROM events_stream
-      WHERE toDate(timestamp) = today()
-      GROUP BY user_id
-  )
-  GROUP BY level
-  ORDER BY level ASC
-
+```sql ClickHouse SQL
+SELECT
+    level,
+    count() as utenti,
+    round(count() / first_value(count()) OVER () * 100, 2) as conversion_rate
+FROM
+(
+    SELECT
+        user_id,
+        windowFunnel(3600, 'strict_order')(
+            timestamp,
+            event_name = 'view_item',
+            event_name = 'add_to_cart',
+            event_name = 'purchase'
+        ) as level
+    FROM events_stream
+    WHERE toDate(timestamp) = today()
+    GROUP BY user_id
+)
+GROUP BY level
+ORDER BY level ASC
 ```
 
-</CodeGroup>
+<Tip>
+**Pro Tip:** Il parametro `3600` imposta una finestra di 1 ora. `strict_order` garantisce che i passaggi del funnel (view -> cart -> purchase) avvengano esattamente in sequenza.
+</Tip>
 
 <Warning>
 **High Cardinality Warning**: Se usi `user_id` basati su cookie in un ambiente ITP (Safari), assicurati di implementare una logica di *Identity Resolution* server-side prima di ingerire i dati in ClickHouse.
