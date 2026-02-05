@@ -1,0 +1,83 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Analytics Pro 2026",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#059669",
+    "light": "#F9FAFB",
+    "dark": "#111827",
+    "anchors": "#059669"
+  },
+  "topbarCtaButton": {
+    "name": "Collabora con me",
+    "url": "mailto:tuo@email.com"
+  },
+  "tabs": [
+    {
+      "name": "Analitica Marketing",
+      "url": "analytics"
+    },
+    {
+      "name": "Real-Time Engineering",
+      "url": "realtime"
+    },
+    {
+      "name": "Blog & Trends",
+      "url": "blog"
+    },
+    {
+      "name": "Chi Sono",
+      "url": "about"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "1. Data-Driven Management",
+      "pages": [
+        "analytics/management/deming-hadi",
+        "analytics/management/jtbd-framework",
+        "analytics/management/custdev-research"
+      ]
+    },
+    {
+      "group": "2. Product Analytics",
+      "pages": [
+        "analytics/product/pmf-retention",
+        "analytics/product/nps-ux-metrics",
+        "analytics/product/ab-testing"
+      ]
+    },
+    {
+      "group": "3. Marketing Analytics",
+      "pages": [
+        "analytics/marketing/funnel-unit-economics",
+        "analytics/marketing/attribution-models",
+        "analytics/marketing/brand-health"
+      ]
+    },
+    {
+      "group": "4. Metrics & Dashboards",
+      "pages": [
+        "analytics/metrics/statistics-basics",
+        "analytics/metrics/metric-decomposition",
+        "analytics/metrics/dashboard-design"
+      ]
+    },
+    {
+      "group": "ClickHouse & Real-Time",
+      "pages": [
+        "realtime/architecture/modern-stack",
+        "realtime/clickhouse/funnel-queries",
+        "realtime/clickhouse/materialized-views"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "linkedin": "https://linkedin.com/in/tuoprofilo",
+    "github": "https://github.com/tuorepo"
+  }
+}
